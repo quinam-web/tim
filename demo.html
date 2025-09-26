@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>500 Trái Tim — Đào Thị Lan Anh</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html,body { height:100%; font-family:"Segoe UI",sans-serif; }
+
+    .stage {
+      position:relative;
+      width:100%;
+      height:100vh;
+      background:url('anh.jpg') no-repeat center center;
+      background-size:cover;
+      overflow:hidden;
+    }
+
+    /* chữ ở giữa phía dưới */
+    .center-text {
+      position:absolute;
+      bottom:30px;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:5;
+    }
+    .center-text h1 {
+      font-size:clamp(24px,5vw,60px);
+      color:#fff;
+      text-shadow:0 2px 6px rgba(0,0,0,0.8);
+      background:rgba(0,0,0,0.25);
+      padding:10px 20px;
+      border-radius:12px;
+    }
+
+    .hearts {
+      position:absolute;
+      inset:0;
+      z-index:2;
+      pointer-events:none;
+    }
+
+    .heart {
+      position:absolute;
+      transform:translate(-50%,-50%);
+      font-size:18px;
+      opacity:.8;
+      text-shadow:0 1px 2px rgba(0,0,0,0.35);
+    }
+
+    @keyframes floatUp {
+      0%   { transform:translate(-50%,-50%) translateY(0) scale(1) rotate(0deg); opacity:1; }
+      50%  { transform:translate(-50%,-50%) translateY(-8px) scale(1.05) rotate(8deg); opacity:.95; }
+      100% { transform:translate(-50%,-50%) translateY(-20px) scale(.98) rotate(-6deg); opacity:.9; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="hearts" id="hearts"></div>
+    <div class="center-text"><h1>Đào Thị Lan Anh</h1></div>
+  </div>
+
+  <script>
+    (function createHearts(){
+      const container = document.getElementById('hearts');
+      const total = 500;
+      const heartChars = ['❤','♥','💖','💘'];
+      const colors = [
+        'rgba(255,60,120,0.9)',
+        'rgba(255,20,80,0.9)',
+        'rgba(255,100,140,0.9)',
+        'rgba(255,140,180,0.9)'
+      ];
+
+      for (let i = 0; i < total; i++) {
+        const el = document.createElement('span');
+        el.className = 'heart';
+        el.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
+
+        let left = Math.random() * 100;
+        let top = Math.random() * 100;
+
+        // tránh khu vực trung tâm (30% giữa ảnh) để không che nhân vật
+        if (left > 35 && left < 65 && top > 25 && top < 75) {
+          // đẩy ra ngoài biên
+          if (left < 50) left = 30 * Math.random();
+          else left = 70 + 30 * Math.random();
+        }
+
+        const size = 10 + Math.random() * 25;
+        const rotate = (Math.random() - 0.5) * 60;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const duration = 3 + Math.random() * 4;
+        const delay = Math.random() * -6;
+
+        el.style.left = left + '%';
+        el.style.top = top + '%';
+        el.style.fontSize = size + 'px';
+        el.style.color = color;
+        el.style.opacity = (0.5 + Math.random() * 0.5).toFixed(2);
+        el.style.animation = `floatUp ${duration}s ease-in-out ${delay}s infinite alternate`;
+        el.style.transform = `translate(-50%,-50%) rotate(${rotate}deg)`;
+
+        container.appendChild(el);
+      }
+    })();
+  </script>
+</body>
+</html>
